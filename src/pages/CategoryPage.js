@@ -46,9 +46,9 @@ const CategoryPage = ({ category }) => {
   const getCategoryUrl = (category, page) => {
     switch (category) {
       case "trending":
-        return `https://api.jikan.moe/v4/top/anime?type=tv&filter=bypopularity&page=${page}`;
+        return `https://api.jikan.moe/v4/top/anime?type=tv&filter=airing&page=${page}`;
       case "popular":
-        return `https://api.jikan.moe/v4/top/anime?type=tv&filter=favorite&page=${page}`;
+        return `https://api.jikan.moe/v4/top/anime?type=tv&page=${page}`;
       case "upcoming":
         return `https://api.jikan.moe/v4/seasons/upcoming?page=${page}`;
       case "allTime":
