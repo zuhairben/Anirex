@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { auth, db } from "../firebase"; // Ensure db is initialized for Firestore
+import { auth, db } from "../firebase"; // Firebase for authentication and database
 import { signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { Link } from "react-router-dom";
-
 
 const UserProfile = () => {
   const navigate = useNavigate();
   const [userData, setUserData] = useState({});
   const [isEditing, setIsEditing] = useState(false);
   const [name, setName] = useState("");
+  const [bio, setBio] = useState("");
+  const [phone, setPhone] = useState("");
   const [loading, setLoading] = useState(true);
 
   // Fetch user data from Firestore or create default profile if none exists
@@ -29,6 +30,8 @@ const UserProfile = () => {
           const data = userSnapshot.data();
           setUserData(data);
           setName(data.name || "");
+          setBio(data.bio || "");
+          setPhone(data.phone || "");
         } else {
           console.log("No profile found, creating a default profile...");
           await setDoc(userDocRef, {
@@ -55,8 +58,9 @@ const UserProfile = () => {
       if (!auth.currentUser) return;
 
       const userDocRef = doc(db, "users", auth.currentUser.uid);
-      await updateDoc(userDocRef, { name });
-      setUserData((prevData) => ({ ...prevData, name }));
+      await updateDoc(userDocRef, { name, bio, phone });
+
+      setUserData((prevData) => ({ ...prevData, name, bio, phone }));
       setIsEditing(false);
       alert("Profile updated successfully!");
     } catch (error) {
@@ -109,6 +113,21 @@ const UserProfile = () => {
           )}
         </div>
 
+        {/* Bio Field */}
+        <div className="mb-4">
+          <strong>Bio:</strong>{" "}
+          {isEditing ? (
+            <textarea
+              value={bio}
+              onChange={(e) => setBio(e.target.value)}
+              className="border p-2 rounded w-full mt-2"
+              rows="3"
+            />
+          ) : (
+            <span>{userData.bio || "No Bio Set"}</span>
+          )}
+        </div>
+
         {isEditing ? (
           <button
             onClick={handleSave}
@@ -121,7 +140,7 @@ const UserProfile = () => {
             onClick={() => setIsEditing(true)}
             className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 mb-2"
           >
-            Edit
+            Edit Profile
           </button>
         )}
 

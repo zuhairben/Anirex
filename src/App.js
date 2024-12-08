@@ -9,6 +9,7 @@ import Signup from './components/Signup';
 import AnimeDetails from './pages/AnimeDetails';
 import Favorites from './pages/Favorites';
 import Watchlist from './pages/WatchList';
+import CategoryPage from './pages/CategoryPage';
 
 function App() {
   return (
@@ -31,6 +32,10 @@ function App() {
         <Route path="/anime/:id" element={<AnimeDetails />} />
         <Route path="/favorites" element={<ProtectedRoute><Favorites /></ProtectedRoute>} />
         <Route path="/watchlist" element={<ProtectedRoute><Watchlist /></ProtectedRoute>} />
+        <Route path="/trending" element={<CategoryPage category="trending"/>} />
+        <Route path="/popular" element={<CategoryPage category="popular" />} />
+        <Route path="/upcoming" element={<CategoryPage category="upcoming" />} />
+        <Route path="/alltime" element={<CategoryPage category="allTime" />} />
     </Routes>
     </>
   );

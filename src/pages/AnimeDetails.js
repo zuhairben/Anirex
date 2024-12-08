@@ -6,8 +6,6 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../firebase";
 import { db } from "../firebase";
 
-
-
 const AnimeDetails = () => {
   const { id } = useParams();
   const [anime, setAnime] = useState(null);
@@ -18,6 +16,7 @@ const AnimeDetails = () => {
   const [newReview, setNewReview] = useState("");
   const [newRating, setNewRating] = useState("");
   const [averageRating, setAverageRating] = useState(0);
+  const [showFullSynopsis, setShowFullSynopsis] = useState(false); // state to toggle synopsis
 
   // Fetch Anime Details
   useEffect(() => {
@@ -137,7 +136,14 @@ const AnimeDetails = () => {
     }
   };
 
+  // Handle "See More" / "See Less" toggle
+  const toggleSynopsis = () => {
+    setShowFullSynopsis((prev) => !prev);
+  };
+
   if (loading) return <div>Loading...</div>;
+
+  const shortSynopsis = anime.synopsis.length > 150 ? anime.synopsis.substring(0, 150) + "..." : anime.synopsis;
 
   return (
     <div className="p-6">
@@ -161,7 +167,16 @@ const AnimeDetails = () => {
         alt={anime.title}
         className="w-full max-w-lg mx-auto rounded mb-4"
       />
-      <p>{anime.synopsis}</p>
+      <p>
+        {showFullSynopsis ? anime.synopsis : shortSynopsis}
+        <button
+          onClick={toggleSynopsis}
+          className="text-blue-500 ml-2"
+        >
+          {showFullSynopsis ? "See Less" : "See More"}
+        </button>
+      </p>
+
       <div className="mt-4">
         <strong>Episodes:</strong> {anime.episodes || "N/A"}
       </div>

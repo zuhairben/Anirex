@@ -15,7 +15,7 @@ const CategoryPage = ({ category }) => {
     const handleScroll = () => {
       if (
         window.innerHeight + document.documentElement.scrollTop >=
-          document.documentElement.offsetHeight - 100 &&
+        document.documentElement.offsetHeight - 100 &&
         !isFetching
       ) {
         fetchMoreAnime();
@@ -61,23 +61,23 @@ const CategoryPage = ({ category }) => {
   return (
     <div className="p-6">
       <h1 className="text-xl font-bold mb-4 capitalize">{category} Anime</h1>
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5">
         {animeList.map((anime) => (
-        <Link to={`/anime/${anime.mal_id}`} key={anime.mal_id}>
-          <div
-            key={anime.mal_id}
-            className="bg-white rounded shadow hover:shadow-lg transition"
-            style={{ width: "180px", height: "320px" }} // Adjusted size
-          >
-            <img
-              src={anime.images.jpg.image_url}
-              alt={anime.title}
-              className="w-full h-64 object-cover rounded-t" // Adjusted size
-            />
-            <div className="p-2">
-              <h3 className="text-sm font-semibold truncate">{anime.title}</h3>
+          <Link to={`/anime/${anime.mal_id}`} key={anime.mal_id}>
+            <div
+              key={anime.mal_id}
+              className="bg-white rounded shadow hover:shadow-lg transition"
+              style={{ width: "150px", height: "270px" }} // Adjusted size
+            >
+              <img
+                src={anime.images.jpg.image_url}
+                alt={anime.title}
+                className="w-full h-48 object-cover rounded-t" // Adjusted size
+              />
+              <div className="p-2">
+                <h3 className="text-sm font-semibold truncate">{anime.title}</h3>
+              </div>
             </div>
-          </div>
           </Link>
         ))}
       </div>
