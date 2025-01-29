@@ -5,6 +5,7 @@ import { doc, setDoc, collection, addDoc, getDocs, query, orderBy } from "fireba
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../firebase";
 import { db } from "../firebase";
+import { Bookmark, Star, Heart } from "lucide-react"; // Icons for buttons
 
 const AnimeDetails = () => {
   const { id } = useParams();
@@ -16,9 +17,8 @@ const AnimeDetails = () => {
   const [newReview, setNewReview] = useState("");
   const [newRating, setNewRating] = useState("");
   const [averageRating, setAverageRating] = useState(0);
-  const [showFullSynopsis, setShowFullSynopsis] = useState(false); // state to toggle synopsis
+  const [showFullSynopsis, setShowFullSynopsis] = useState(false);
 
-  // Fetch Anime Details
   useEffect(() => {
     const fetchAnimeDetails = async () => {
       try {
@@ -30,9 +30,6 @@ const AnimeDetails = () => {
       }
     };
 
-    fetchAnimeDetails();
-
-    // Fetch existing reviews from Firestore
     const fetchReviews = async () => {
       try {
         const reviewsRef = collection(db, `anime/${id}/reviews`);
@@ -46,10 +43,10 @@ const AnimeDetails = () => {
       }
     };
 
+    fetchAnimeDetails();
     fetchReviews();
   }, [id]);
 
-  // Calculate the average rating
   const calculateAverageRating = (reviews) => {
     if (reviews.length === 0) {
       setAverageRating(0);
@@ -59,7 +56,6 @@ const AnimeDetails = () => {
     }
   };
 
-  // Add a new review
   const handleAddReview = async (e) => {
     e.preventDefault();
     if (!newRating || !newReview) {
@@ -84,7 +80,6 @@ const AnimeDetails = () => {
 
       await addDoc(reviewsRef, newReviewData);
 
-      // Update UI after adding review
       setReviews((prev) => [newReviewData, ...prev]);
       setNewReview("");
       setNewRating("");
@@ -94,7 +89,6 @@ const AnimeDetails = () => {
     }
   };
 
-  // Add to Favorites
   const handleAddToFavorites = async () => {
     if (!user) {
       alert("You must be logged in to add favorites!");
@@ -115,7 +109,6 @@ const AnimeDetails = () => {
     }
   };
 
-  // Add to Watchlist
   const handleAddToWatchlist = async () => {
     if (!user) {
       alert("You must be logged in to add to the watchlist!");
@@ -136,110 +129,110 @@ const AnimeDetails = () => {
     }
   };
 
-  // Handle "See More" / "See Less" toggle
   const toggleSynopsis = () => {
     setShowFullSynopsis((prev) => !prev);
   };
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <div className="text-center text-white">Loading...</div>;
 
   const shortSynopsis = anime.synopsis.length > 150 ? anime.synopsis.substring(0, 150) + "..." : anime.synopsis;
 
   return (
-    <div className="p-6">
-      <h1 className="text-3xl font-bold">{anime.title}</h1>
-      <button
-        onClick={handleAddToFavorites}
-        className="bg-blue-500 text-white py-2 px-4 rounded mt-4 my-4"
-      >
-        Add to Favorites
-      </button>
-
-      <button
-        onClick={handleAddToWatchlist}
-        className="bg-blue-500 text-white py-2 px-4 rounded mt-4 my-4 mx-2"
-      >
-        Add to Watchlist
-      </button>
-
-      <img
-        src={anime.images.jpg.image_url}
-        alt={anime.title}
-        className="w-full max-w-lg mx-auto rounded mb-4"
-      />
-      <p>
-        {showFullSynopsis ? anime.synopsis : shortSynopsis}
-        <button
-          onClick={toggleSynopsis}
-          className="text-blue-500 ml-2"
-        >
-          {showFullSynopsis ? "See Less" : "See More"}
-        </button>
-      </p>
-
-      <div className="mt-4">
-        <strong>Episodes:</strong> {anime.episodes || "N/A"}
-      </div>
-      <div className="mt-2">
-        <strong>Rating:</strong> {anime.score || "N/A"}
-      </div>
-      <div className="mt-2">
-        <strong>Genres:</strong>{" "}
-        {anime.genres.map((genre) => genre.name).join(", ")}
-      </div>
-
-      {/* Reviews Section */}
-      <div className="mt-6">
-        <h2 className="text-lg font-semibold">Reviews</h2>
-        <p className="text-lg">Average Rating: {averageRating}/10</p>
-
-        <form onSubmit={handleAddReview} className="mt-4">
-          <textarea
-            value={newReview}
-            onChange={(e) => setNewReview(e.target.value)}
-            placeholder="Write your review..."
-            className="border p-2 rounded w-full mt-2"
-            rows="3"
-          ></textarea>
-          <input
-            type="number"
-            step="0.1" // Allows decimals
-            value={newRating}
-            onChange={(e) => {
-              const value = parseFloat(e.target.value);
-              if (value >= 1 && value <= 10) {
-                setNewRating(e.target.value); // Update state only if within range
-              } else if (!e.target.value) {
-                setNewRating(""); // Allow clearing the input
-              }
-            }}
-            placeholder="Rating (1-10, e.g., 8.5)"
-            className="border p-2 rounded w-full mt-2"
+    <div className="bg-gradient-to-br from-gray-800 to-black min-h-screen text-white p-6">
+      <div className="max-w-4xl mx-auto">
+        <div className="flex flex-col items-center mb-6">
+          <h1 className="text-4xl font-bold text-pink-500">{anime.title}</h1>
+          <img
+            src={anime.images.jpg.image_url}
+            alt={anime.title}
+            className="w-64 h-96 object-cover rounded-lg shadow-lg mt-4"
           />
+          <div className="flex space-x-4 mt-4">
+            <button
+              onClick={handleAddToFavorites}
+              className="bg-pink-500 hover:bg-pink-600 text-white flex items-center px-4 py-2 rounded-lg shadow-lg"
+            >
+              <Heart className="w-5 h-5 mr-2" />
+              Add to Favorites
+            </button>
+            <button
+              onClick={handleAddToWatchlist}
+              className="bg-blue-500 hover:bg-blue-600 text-white flex items-center px-4 py-2 rounded-lg shadow-lg"
+            >
+              <Bookmark className="w-5 h-5 mr-2" />
+              Add to Watchlist
+            </button>
+          </div>
+        </div>
 
+        <p className="text-center text-lg">
+          {showFullSynopsis ? anime.synopsis : shortSynopsis}
           <button
-            type="submit"
-            className="bg-blue-500 text-white py-2 px-4 rounded mt-2"
+            onClick={toggleSynopsis}
+            className="text-blue-400 hover:underline ml-2"
           >
-            Submit Review
+            {showFullSynopsis ? "See Less" : "See More"}
           </button>
-        </form>
+        </p>
 
-        <ul className="mt-4">
-          {reviews.map((review, index) => (
-            <li key={index} className="border-b py-2">
-              <p>
-                <strong>{review.userName}:</strong> {review.text}
-              </p>
-              <p>
-                <strong>Rating:</strong> {review.rating}/10
-              </p>
-              <p className="text-sm text-gray-500">
-                {new Date(review.date).toLocaleDateString()}
-              </p>
-            </li>
-          ))}
-        </ul>
+        <div className="mt-6 space-y-2 text-lg">
+          <p>
+            <strong>Episodes:</strong> {anime.episodes || "N/A"}
+          </p>
+          <p>
+            <strong>Rating:</strong> {anime.score || "N/A"}
+          </p>
+          <p>
+            <strong>Genres:</strong>{" "}
+            {anime.genres.map((genre) => genre.name).join(", ")}
+          </p>
+        </div>
+
+        {/* Reviews Section */}
+        <div className="mt-10">
+          <h2 className="text-2xl font-bold text-pink-500">Reviews</h2>
+          <p className="text-lg mt-2">Average Rating: {averageRating}/10</p>
+
+          <form onSubmit={handleAddReview} className="mt-6">
+            <textarea
+              value={newReview}
+              onChange={(e) => setNewReview(e.target.value)}
+              placeholder="Write your review..."
+              className="w-full p-4 rounded-lg border border-gray-700 bg-gray-900 text-white"
+              rows="4"
+            ></textarea>
+            <input
+              type="number"
+              step="0.1"
+              value={newRating}
+              onChange={(e) => setNewRating(e.target.value)}
+              placeholder="Rating (1-10)"
+              className="w-full p-2 mt-4 rounded-lg border border-gray-700 bg-gray-900 text-white"
+            />
+            <button
+              type="submit"
+              className="bg-pink-500 hover:bg-pink-600 text-white px-6 py-2 rounded-lg shadow-lg mt-4"
+            >
+              Submit Review
+            </button>
+          </form>
+
+          <ul className="mt-6 space-y-4">
+            {reviews.map((review, index) => (
+              <li key={index} className="bg-gray-900 p-4 rounded-lg shadow-lg">
+                <p>
+                  <strong>{review.userName}:</strong> {review.text}
+                </p>
+                <p>
+                  <strong>Rating:</strong> {review.rating}/10
+                </p>
+                <p className="text-sm text-gray-500">
+                  {new Date(review.date).toLocaleDateString()}
+                </p>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
     </div>
   );

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase";
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -16,51 +17,71 @@ const Login = () => {
       alert("Login successful!");
       navigate("/profile");
     } catch (err) {
-      setError(err.message);
+      setError("Invalid email or password. Please try again.");
     }
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100">
-      <form
-        onSubmit={handleLogin}
-        className="bg-white p-6 rounded shadow-md w-80"
+    <div className="flex justify-center items-center min-h-screen bg-gradient-to-br from-gray-900 to-black">
+      <motion.div
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.5, ease: "easeOut" }}
+        className="bg-gray-800 p-8 rounded-lg shadow-lg w-96 text-white"
       >
-        <h2 className="text-2xl font-bold mb-4">Log In</h2>
-        {error && <p className="text-red-500 mb-2">{error}</p>}
-        <div className="mb-4">
-          <label htmlFor="email" className="block text-sm font-medium mb-1">
-            Email
-          </label>
-          <input
-            id="email"
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="w-full px-3 py-2 border rounded"
-            required
-          />
+        <h2 className="text-3xl font-bold text-center text-pink-400 mb-6">Welcome Back!</h2>
+
+        {error && <p className="text-red-400 text-center mb-4">{error}</p>}
+
+        <form onSubmit={handleLogin}>
+          <div className="mb-4">
+            <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-1">
+              Email
+            </label>
+            <input
+              id="email"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full px-3 py-2 bg-gray-700 text-white border border-gray-600 rounded focus:outline-none focus:ring-2 focus:ring-pink-400"
+              required
+            />
+          </div>
+
+          <div className="mb-4">
+            <label htmlFor="password" className="block text-sm font-medium text-gray-300 mb-1">
+              Password
+            </label>
+            <input
+              id="password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full px-3 py-2 bg-gray-700 text-white border border-gray-600 rounded focus:outline-none focus:ring-2 focus:ring-pink-400"
+              required
+            />
+          </div>
+
+          <button
+            type="submit"
+            className="w-full bg-pink-500 hover:bg-pink-600 text-white py-2 rounded-lg transition duration-300 shadow-md"
+          >
+            Log In
+          </button>
+        </form>
+
+        <div className="text-center mt-4">
+          <p className="text-gray-400">Don't have an account?</p>
+          <motion.button
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            onClick={() => navigate("/signup")}
+            className="text-pink-400 font-semibold underline transition duration-200"
+          >
+            Sign Up
+          </motion.button>
         </div>
-        <div className="mb-4">
-          <label htmlFor="password" className="block text-sm font-medium mb-1">
-            Password
-          </label>
-          <input
-            id="password"
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="w-full px-3 py-2 border rounded"
-            required
-          />
-        </div>
-        <button
-          type="submit"
-          className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600"
-        >
-          Log In
-        </button>
-      </form>
+      </motion.div>
     </div>
   );
 };

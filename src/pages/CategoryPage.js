@@ -59,29 +59,33 @@ const CategoryPage = ({ category }) => {
   };
 
   return (
-    <div className="p-6">
-      <h1 className="text-xl font-bold mb-4 capitalize">{category} Anime</h1>
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5">
+    <div className="bg-gradient-to-br from-gray-800 to-black min-h-screen p-6 text-white">
+      <h1 className="text-3xl font-bold mb-6 capitalize text-pink-500">
+        {category} Anime
+      </h1>
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
         {animeList.map((anime) => (
           <Link to={`/anime/${anime.mal_id}`} key={anime.mal_id}>
-            <div
-              key={anime.mal_id}
-              className="bg-white rounded shadow hover:shadow-lg transition"
-              style={{ width: "150px", height: "270px" }} // Adjusted size
-            >
+            <div className="bg-gray-900 rounded-lg shadow-lg hover:scale-105 transition transform duration-300">
               <img
                 src={anime.images.jpg.image_url}
                 alt={anime.title}
-                className="w-full h-48 object-cover rounded-t" // Adjusted size
+                className="w-full h-48 object-cover rounded-t-lg"
               />
-              <div className="p-2">
-                <h3 className="text-sm font-semibold truncate">{anime.title}</h3>
+              <div className="p-4">
+                <h3 className="text-lg font-semibold text-white truncate">
+                  {anime.title}
+                </h3>
               </div>
             </div>
           </Link>
         ))}
       </div>
-      {isFetching && <p>Loading more anime...</p>}
+      {isFetching && (
+        <div className="flex justify-center mt-6">
+          <p className="text-pink-500 font-semibold">Loading more anime...</p>
+        </div>
+      )}
     </div>
   );
 };
