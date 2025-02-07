@@ -1,0 +1,65 @@
+.home-container {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    background: url('../images/background.jpg') no-repeat center center/cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: white;
+  }
+  
+  .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Dark overlay for better readability */
+  }
+  
+  .content {
+    position: relative;
+    z-index: 2;
+  }
+  
+  .title {
+    font-size: 3rem;
+    font-weight: bold;
+  }
+  
+  .subtitle {
+    font-size: 1.5rem;
+    margin-top: 10px;
+  }
+  
+  .buttons {
+    margin-top: 20px;
+  }
+  
+  .explore-btn, .signup-btn {
+    padding: 12px 24px;
+    margin: 10px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  
+  .explore-btn {
+    background: #ff6b6b;
+    color: white;
+  }
+  
+  .signup-btn {
+    background: transparent;
+    border: 2px solid white;
+    color: white;
+  }
+  
+  .explore-btn:hover, .signup-btn:hover {
+    transform: scale(1.05);
+  }
+  

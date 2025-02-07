@@ -24,7 +24,7 @@ const Header = () => {
         <div className="space-x-4 flex">
           {user ? (
             <>
-              <AnimatedLink to="/">Home</AnimatedLink>
+              <AnimatedLink to="/home">Home</AnimatedLink>
               <AnimatedLink to="/profile">Profile</AnimatedLink>
             </>
           ) : (

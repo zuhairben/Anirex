@@ -10,13 +10,15 @@ import AnimeDetails from './pages/AnimeDetails';
 import Favorites from './pages/Favorites';
 import Watchlist from './pages/WatchList';
 import CategoryPage from './pages/CategoryPage';
+import StartingPage from './pages/StartingPage'
 
 function App() {
   return (
     <>
     <Header/>
     <Routes>
-      <Route path='/' element={<ProtectedRoute>
+      <Route path='/' element={<StartingPage/>}/>
+      <Route path='/home' element={<ProtectedRoute>
       <Home />
     </ProtectedRoute>}/>
       <Route path='/login' element={<Login/>}/>
